@@ -1,0 +1,61 @@
+
+myos.elf:     file format elf32-littleriscv
+
+
+Disassembly of section .text:
+
+80000000 <_start>:
+_start:
+
+  # Initialize global pointer
+.option push
+.option norelax
+	la		gp,__global_pointer$
+80000000:	00001197          	auipc	gp,0x1
+80000004:	83c18193          	addi	gp,gp,-1988 # 8000083c <__global_pointer$>
+.option pop
+
+    # Clear the bss segment
+	la      a0,__bss_start
+80000008:	00000517          	auipc	a0,0x0
+8000000c:	03450513          	addi	a0,a0,52 # 8000003c <__BSS_END__>
+	la      a1,__BSS_END__
+80000010:	00000597          	auipc	a1,0x0
+80000014:	02c58593          	addi	a1,a1,44 # 8000003c <__BSS_END__>
+
+80000018 <clear_bss>:
+
+clear_bss:
+	bgeu	a0,a1,finish_bss
+80000018:	00b57763          	bgeu	a0,a1,80000026 <finish_bss>
+	sb		x0,0(a0)
+8000001c:	00050023          	sb	zero,0(a0)
+	addi	a0,a0,1
+80000020:	0505                	addi	a0,a0,1
+	beq		x0,x0,clear_bss
+80000022:	fe000be3          	beqz	zero,80000018 <clear_bss>
+
+80000026 <finish_bss>:
+finish_bss:
+
+#if 1
+	call    main
+80000026:	00000097          	auipc	ra,0x0
+8000002a:	00a080e7          	jalr	10(ra) # 80000030 <main>
+	auipc   x1,%pcrel_hi(main)
+	jalr    x1,%pcrel_lo(callmain)(x1)
+#endif
+
+	# abort execution here
+	ebreak			
+8000002e:	9002                	ebreak
+
+80000030 <main>:
+
+int main()
+{
+	return 0x8675309;
+}
+80000030:	08675537          	lui	a0,0x8675
+80000034:	30950513          	addi	a0,a0,777 # 8675309 <_start-0x7798acf7>
+80000038:	8082                	ret
