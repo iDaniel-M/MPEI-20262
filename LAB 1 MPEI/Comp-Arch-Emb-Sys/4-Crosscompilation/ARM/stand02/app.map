@@ -1,0 +1,104 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x00000000         0x00100000         xr
+RAM              0x20000000         0x00020000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /tmp/ccosMIps.o
+
+.text           0x00000000       0x80
+ *(.isr_vector)
+ .isr_vector    0x00000000       0x40 /tmp/ccosMIps.o
+                0x00000000                g_pfnVectors
+ *(.text*)
+ .text          0x00000040        0x0 /tmp/ccosMIps.o
+ .text.Reset_Handler
+                0x00000040       0x40 /tmp/ccosMIps.o
+                0x00000040                Reset_Handler
+                0x0000006a                DebugMon_Handler
+                0x0000006a                HardFault_Handler
+                0x0000006a                SysTick_Handler
+                0x0000006a                PendSV_Handler
+                0x0000006a                NMI_Handler
+                0x0000006a                UsageFault_Handler
+                0x0000006a                MemManage_Handler
+                0x0000006a                SVC_Handler
+                0x0000006a                BusFault_Handler
+
+.glue_7         0x00000080        0x0
+ .glue_7        0x00000080        0x0 linker stubs
+
+.glue_7t        0x00000080        0x0
+ .glue_7t       0x00000080        0x0 linker stubs
+
+.vfp11_veneer   0x00000080        0x0
+ .vfp11_veneer  0x00000080        0x0 linker stubs
+
+.v4_bx          0x00000080        0x0
+ .v4_bx         0x00000080        0x0 linker stubs
+
+.iplt           0x00000080        0x0
+ .iplt          0x00000080        0x0 /tmp/ccosMIps.o
+
+.rel.dyn        0x00000080        0x0
+ .rel.iplt      0x00000080        0x0 /tmp/ccosMIps.o
+
+.rodata         0x00000080        0x0
+ *(.rodata*)
+ *(.srodata*)
+                0x00000080                        _sidata = .
+
+.data           0x20000000       0x20 load address 0x00000080
+                0x20000000                        _sdata = .
+ *(.data*)
+ .data          0x20000000       0x20 /tmp/ccosMIps.o
+ *(.sdata*)
+                0x20000020                        _edata = .
+
+.igot.plt       0x20000020        0x0 load address 0x000000a0
+ .igot.plt      0x20000020        0x0 /tmp/ccosMIps.o
+
+.bss            0x20000020       0x18 load address 0x000000a0
+                0x20000020                        _sbss = .
+ *(.bss*)
+ .bss           0x20000020       0x18 /tmp/ccosMIps.o
+                0x20000038                        _ebss = .
+
+.stack          0x20000038    0x1ffc8 load address 0x000000b8
+                0x20020000                        . = (ORIGIN (RAM) + LENGTH (RAM))
+ *fill*         0x20000038    0x1ffc8 
+                0x20020000                        stack_top = .
+OUTPUT(app.elf elf32-littlearm)
+LOAD linker stubs
+
+.ARM.attributes
+                0x00000000       0x21
+ .ARM.attributes
+                0x00000000       0x21 /tmp/ccosMIps.o
+
+.debug_line     0x00000000       0x61
+ .debug_line    0x00000000       0x61 /tmp/ccosMIps.o
+
+.debug_line_str
+                0x00000000       0x5a
+ .debug_line_str
+                0x00000000       0x5a /tmp/ccosMIps.o
+
+.debug_info     0x00000000       0x24
+ .debug_info    0x00000000       0x24 /tmp/ccosMIps.o
+
+.debug_abbrev   0x00000000       0x14
+ .debug_abbrev  0x00000000       0x14 /tmp/ccosMIps.o
+
+.debug_aranges  0x00000000       0x20
+ .debug_aranges
+                0x00000000       0x20 /tmp/ccosMIps.o
+
+.debug_str      0x00000000       0x66
+ .debug_str     0x00000000       0x66 /tmp/ccosMIps.o
