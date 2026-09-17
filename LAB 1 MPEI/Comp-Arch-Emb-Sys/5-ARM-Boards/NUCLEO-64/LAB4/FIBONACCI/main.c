@@ -1,3 +1,32 @@
+/*************************************************************************************
+ * PROYECTO: Control de Displays 7-Segmentos y Lectura de DIP Switch (Bare-Metal)
+ * TARJETA:  STM32 Nucleo-64 (Ej. NUCLEO-F401RE / F411RE - ARM Cortex-M4)
+ * 
+ * --- MAPA DE CONEXIONES (PINOUT) ---
+ *
+ * 1. ENTRADAS: DIP SWITCH (8 Bits)
+ *    Lógica: Pull-up interno activado. Un pin a GND se lee como 1 (Activo en Bajo).
+ *    - PC0 -> SW 1 (Bit 0 - LSB)  [Físico: CN8 Pin 6 / CN7 Pin 38]
+ *    - PC1 -> SW 2 (Bit 1)        [Físico: CN8 Pin 5 / CN7 Pin 36]
+ *    - PC2 -> SW 3 (Bit 2)        [Físico: CN7 Pin 35]
+ *    - PC3 -> SW 4 (Bit 3)        [Físico: CN7 Pin 37]
+ *    - PC4 -> SW 5 (Bit 4)        [Físico: CN10 Pin 34]
+ *    - PC5 -> SW 6 (Bit 5)        [Físico: CN10 Pin 6]
+ *    - PC6 -> SW 7 (Bit 6)        [Físico: CN10 Pin 4]
+ *    - PC7 -> SW 8 (Bit 7 - MSB)  [Físico: CN5 Pin 2 (D9) / CN10 Pin 19]
+ *    * Nota: El otro lado de todos los interruptores del DIP Switch va a Tierra (GND).
+ *
+ * 2. SALIDAS: SEGMENTOS DEL DISPLAY (PA0, PA1, PA4, PA5, PA6, PA7, PA8)
+ *    Lógica: Escribir un '0' enciende el segmento (Ánodo Común / GND activo).
+ *    - PA0, PA1, PA4, PA5, PA6, PA7, PA8 -> Conectados a los segmentos A-G a través de
+ *                                           resistencias limitadoras.
+ *
+ * 3. SALIDAS: MULTIPLEXADO (Transistores de los Dígitos)
+ *    - PB0 -> Habilita Display 1 (Centenas)
+ *    - PB5 -> Habilita Display 2 (Decenas)
+ *    - PB2 -> Habilita Display 3 (Unidades)
+ *************************************************************************************/
+
 #include <stdint.h>
 
 extern uint32_t _estack;
