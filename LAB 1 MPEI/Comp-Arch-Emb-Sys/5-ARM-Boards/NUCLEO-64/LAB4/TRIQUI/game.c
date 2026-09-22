@@ -1,6 +1,6 @@
 #include "game.h"
 
-// Matriz estática que representa la memoria del tablero de 3x3
+// Matriz estatica que representa la memoria del tablero de 3x3
 static uint8_t tablero[3][3];
 // Variable que almacena el estado actual de la partida
 static uint8_t estado_actual;
@@ -11,33 +11,33 @@ void inicializar_juego(void) {
     for (uint8_t f = 0; f < 3; f++) {
         // Recorremos las columnas con la variable 'c'
         for (uint8_t c = 0; c < 3; c++) {
-            tablero[f][c] = CASILLA_VACIA; // Asignamos un cero a cada posición
+            tablero[f][c] = CASILLA_VACIA; // Asignamos un cero a cada posicion
         }
     }
     estado_actual = ESTADO_ACTIVO; // Declaramos la partida como inicializada y en curso
 }
 
-// Función para consultar qué jugador tiene una celda en específico
+// Función para consultar que jugador tiene una celda en específico
 uint8_t obtener_casilla(uint8_t fila, uint8_t col) {
-    // Verificamos por seguridad que las coordenadas no superen el índice máximo (2)
+    // Verificamos por seguridad que las coordenadas no superen el indice maximo (2)
     if (fila < 3 && col < 3) {
         return tablero[fila][col];
     }
-    return CASILLA_VACIA; // Retorno de seguridad ante índices no válidos
+    return CASILLA_VACIA; // Retorno de seguridad ante índices no validos
 }
 
-// Función encargada de escribir la ficha de un jugador en la matriz
+// Funcion encargada de escribir la ficha de un jugador en la matriz
 bool registrar_movimiento(uint8_t fila, uint8_t col, uint8_t jugador) {
-    // Validamos límites, que la casilla esté libre y que la partida no haya acabado
+    // Validamos limites, que la casilla este libre y que la partida no haya acabado
     if (fila < 3 && col < 3 && tablero[fila][col] == CASILLA_VACIA && estado_actual == ESTADO_ACTIVO) {
         tablero[fila][col] = jugador; // Escribimos la ficha en memoria
-        estado_actual = evaluar_estado_juego(); // Comprobamos si esta jugada desencadenó una victoria o empate
+        estado_actual = evaluar_estado_juego(); // Comprobamos si esta jugada desencadeno una victoria o empate
         return true; // Indicamos que el movimiento fue procesado exitosamente
     }
-    return false; // El movimiento no fue válido
+    return false; // El movimiento no fue valido
 }
 
-// Lógica para revisar victoria, empate o continuación
+// Logica para revisar victoria, empate o continuación
 uint8_t evaluar_estado_juego(void) {
     // 1. Verificamos coincidencia en filas o columnas completas
     for (uint8_t x = 0; x < 3; x++) {
@@ -80,22 +80,21 @@ uint8_t evaluar_estado_juego(void) {
     return ESTADO_ACTIVO;
 }
 
-// Inteligencia artificial básica para la máquina
+// Inteligencia artificial basica para la máquina
 void turno_maquina(void) {
     // Verificación de seguridad para no alterar la memoria de una partida terminada
     if (estado_actual != ESTADO_ACTIVO) {
         return;
     }
 
-    // A diferencia del código original, buscamos casillas de reversa (desde abajo-derecha hasta arriba-izquierda)
-    // Esto hará que el bot responda de forma distinta, llenando primero el tablero inferior
+    // buscamos casillas de reversa (desde abajo-derecha hasta arriba-izquierda)
     for (int8_t f = 2; f >= 0; f--) {
         for (int8_t c = 2; c >= 0; c--) {
             // Evaluamos si encontramos la primera celda libre desde el final
             if (tablero[f][c] == CASILLA_VACIA) {
                 tablero[f][c] = JUGADOR_DOS; // Ejecutamos la jugada de la máquina
                 estado_actual = evaluar_estado_juego(); // Revalidamos la condición de victoria
-                return; // Matamos la ejecución para que juegue solo una vez por turno
+                return; // Matamos la ejecucion para que juegue solo una vez por turno
             }
         }
     }

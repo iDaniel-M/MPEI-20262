@@ -1,11 +1,11 @@
-# Define la cadena de compilación de GCC especializada en arquitecturas ARM que no tienen OS subyacente
+# Define la cadena de compilacion de GCC especializada en arquitecturas ARM que no tienen OS subyacente
 CC = arm-none-eabi-gcc
 
 # Banderas de compilador detalladas para C:
-# -Wall -Wextra: Habilita chequeos estrictos del compilador para evitar fallos lógicos 
-# -std=c11: Fija el estándar sintáctico a C de 2011
-# -ffreestanding: Indica que el entorno no tiene biblioteca C estándar (stdlib) montada
-# -Og -g: Orientado a depuración (g) con mínima optimización (Og)
+# -Wall -Wextra: Habilita chequeos estrictos del compilador para evitar fallos logicos 
+# -std=c11: Fija el estandar sintactico a C de 2011
+# -ffreestanding: Indica que el entorno no tiene biblioteca C estandar (stdlib) montada
+# -Og -g: Orientado a depuracion (g) con minima optimizacion (Og)
 # -mcpu=cortex-m4: Afirma la arquitectura del procesador del STM32 Nucleo
 # -mthumb: Obliga al procesador a decodificar instrucciones en conjunto Thumb-2 (Ahorro de flash)
 # -mfpu / -mfloat-abi: Habilita el coprocesador de punto flotante de hardware
@@ -14,17 +14,17 @@ CFLAGS = -Wall -Wextra -std=c11 -ffreestanding -Og -g -mcpu=cortex-m4 -mthumb -m
 # Banderas de enlazado (Linker) indicando que use nuestro linker script de memoria propio 
 LDFLAGS = -nostdlib -Tlinker_script.ld -Wl,--no-relax,-Map=juego_triqui.map
 
-# Compilación de los archivos intermedios generados para la unión posterior
+# Compilacion de los archivos intermedios generados para la union posterior
 OBJS = src/main.o src/gpio_config.o src/game.o crt0.o
 
 # Reglas principales (modificamos 'triqui' por 'juego_triqui' en todos los lugares)
 all: juego_triqui.elf juego_triqui.bin
 
-# Receta de Make genérica que indica cómo transformar cada *.c en un *.o
+# Receta de Make generica que indica como transformar cada *.c en un *.o
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-# Receta de Make genérica para compilar archivos de ensamblador (*.S)
+# Receta de Make generica para compilar archivos de ensamblador (*.S)
 %.o: %.S
 	$(CC) $(CFLAGS) -c $< -o $@
 
