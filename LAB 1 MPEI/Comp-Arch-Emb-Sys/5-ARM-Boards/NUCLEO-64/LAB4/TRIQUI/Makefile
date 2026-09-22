@@ -17,7 +17,7 @@ LDFLAGS = -nostdlib -Tlinker_script.ld -Wl,--no-relax,-Map=juego_triqui.map
 # Compilacion de los archivos intermedios generados para la union posterior
 OBJS = src/main.o src/gpio_config.o src/game.o crt0.o
 
-# Reglas principales (modificamos 'triqui' por 'juego_triqui' en todos los lugares)
+# Reglas principales
 all: juego_triqui.elf juego_triqui.bin
 
 # Receta de Make generica que indica como transformar cada *.c en un *.o
