@@ -2,19 +2,36 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f401xe.h"
-#include "gpio_config.h"
-#include "system_config.h"
+#include "inc/gpio_config.h"
+#include "inc/system_config.h"
 
 
 #define LED_PIN 5 // Pin 5 corresponds to the on-board LED on the NUCLEO-64 board
 #define BUTTON_PIN 13 // Pin 13 corresponds to the on-board button on the NUCLEO-64 board
 
+
+void GPIO_board_config(void)
+{
+  GPIO_InitTypeDef GPIO_Init; 
+  GPIO_Init.Pin = LED_PIN;
+  GPIO_Init.Mode = 1;
+  GPIO_Init.Speed = 3;
+  GPIO_Config(GPIOA,GPIO_Init);
+
+  GPIO_Init.Pin = BUTTON_PIN;
+  GPIO_Init.Mode = 0;
+  GPIO_Init.Pull = 1;
+  GPIO_Config(GPIOC,GPIO_Init);
+}
+
 int main()
 {
 
   clock_config();
-  GPIO_Config();
-  SysTick_Init();
+
+  GPIO_board_config();
+
+  SysTick_Init(1);
 
   while(1)
   {

@@ -3,6 +3,12 @@
 #include "stm32f4xx.h"
 #include "stdint.h"
 
+#define WRITE_REG_FIELD(REG, MASK, VAL) \
+    (REG = (REG & ~MASK) | ((VAL << POSITION_VAL(MASK)) & MASK))
+
+#define READ_REG_FIELD(REG, MASK) \
+    ((REG & MASK) >> POSITION_VAL(MASK))
+    
 void GPIO_Config(void);
 
 uint8_t read_pin_state(volatile GPIO_TypeDef *GPIOx, uint8_t pin);

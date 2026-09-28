@@ -55,7 +55,7 @@ debug: $(APPNAME).elf
 
 .PHONY: clean
 clean:	
-	rm -f *.o *.elf *.img
+	rm -f *.o *.elf *.img 
 
 
 .PHONY: flash

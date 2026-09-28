@@ -1,0 +1,130 @@
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00080000         xr
+RAM              0x20000000         0x00020000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /tmp/ccQSAcPF.o
+                0x20020000                        _estack = (ORIGIN (RAM) + LENGTH (RAM))
+
+.isr_vector     0x08000000       0xe4
+ *(.isr_vector)
+ .isr_vector    0x08000000       0xe4 /tmp/ccQSAcPF.o
+                0x08000000                g_pfnVectors
+
+.text           0x080000e4      0x648
+ *(.text*)
+ .text          0x080000e4      0x594 /tmp/ccQSAcPF.o
+                0x080000e4                Default_Handler
+                0x080000e8                HardFault_Handler
+                0x08000114                TIM3_IRQHandler
+                0x080001d0                SysTick_Handler
+                0x080002c4                GPIO_Init
+                0x08000364                EXTI_Buttons_Init
+                0x080003d8                TIM1_PWM_Init
+                0x08000430                TIM3_Multiplex_Init
+                0x08000470                SysTick_Init
+                0x08000484                Play_Tone
+                0x080004a8                Start_Playback
+                0x080004ec                EXTI15_10_IRQHandler
+                0x08000670                Reset_Handler
+ .text.startup  0x08000678       0x38 /tmp/ccQSAcPF.o
+                0x08000678                main
+ *(.rodata*)
+ .rodata        0x080006b0       0x7c /tmp/ccQSAcPF.o
+                0x080006b0                text_play
+                0x080006bc                text_paus
+                0x080006c8                text_stop
+                0x080006d4                song_2
+                0x080006fc                song_1
+
+.glue_7         0x0800072c        0x0
+ .glue_7        0x0800072c        0x0 linker stubs
+
+.glue_7t        0x0800072c        0x0
+ .glue_7t       0x0800072c        0x0 linker stubs
+
+.vfp11_veneer   0x0800072c        0x0
+ .vfp11_veneer  0x0800072c        0x0 linker stubs
+
+.v4_bx          0x0800072c        0x0
+ .v4_bx         0x0800072c        0x0 linker stubs
+
+.iplt           0x0800072c        0x0
+ .iplt          0x0800072c        0x0 /tmp/ccQSAcPF.o
+
+.rel.dyn        0x0800072c        0x0
+ .rel.iplt      0x0800072c        0x0 /tmp/ccQSAcPF.o
+
+.data           0x20000000       0x18 load address 0x0800072c
+                0x20000000                        _sdata = .
+ *(.data*)
+ .data          0x20000000       0x18 /tmp/ccQSAcPF.o
+                0x20000000                playlist
+                0x20000008                last_press_ms
+                0x20000018                        _edata = .
+
+.igot.plt       0x20000018        0x0 load address 0x08000744
+ .igot.plt      0x20000018        0x0 /tmp/ccQSAcPF.o
+
+.bss            0x20000018       0x1b load address 0x08000744
+                0x20000018                        _sbss = .
+ *(.bss*)
+ .bss           0x20000018       0x1b /tmp/ccQSAcPF.o
+                0x2000001c                display_buffer
+                0x20000024                ms_ticks
+                0x20000028                current_state
+                0x2000002a                note_timer
+                0x2000002c                note_index
+                0x2000002e                current_song
+                0x20000030                scroll_timer
+                0x20000032                scroll_index
+ *(COMMON)
+                0x20000033                        _ebss = .
+OUTPUT(main.elf elf32-littlearm)
+LOAD linker stubs
+
+.debug_info     0x00000000      0xcfb
+ .debug_info    0x00000000      0xcfb /tmp/ccQSAcPF.o
+
+.debug_abbrev   0x00000000      0x332
+ .debug_abbrev  0x00000000      0x332 /tmp/ccQSAcPF.o
+
+.debug_loclists
+                0x00000000      0x1a7
+ .debug_loclists
+                0x00000000      0x1a7 /tmp/ccQSAcPF.o
+
+.debug_aranges  0x00000000       0x28
+ .debug_aranges
+                0x00000000       0x28 /tmp/ccQSAcPF.o
+
+.debug_rnglists
+                0x00000000       0xe4
+ .debug_rnglists
+                0x00000000       0xe4 /tmp/ccQSAcPF.o
+
+.debug_line     0x00000000      0xa59
+ .debug_line    0x00000000      0xa59 /tmp/ccQSAcPF.o
+
+.debug_str      0x00000000      0x4c9
+ .debug_str     0x00000000      0x4c9 /tmp/ccQSAcPF.o
+                                0x518 (size before relaxing)
+
+.comment        0x00000000       0x26
+ .comment       0x00000000       0x26 /tmp/ccQSAcPF.o
+                                 0x27 (size before relaxing)
+
+.ARM.attributes
+                0x00000000       0x2e
+ .ARM.attributes
+                0x00000000       0x2e /tmp/ccQSAcPF.o
+
+.debug_frame    0x00000000      0x158
+ .debug_frame   0x00000000      0x158 /tmp/ccQSAcPF.o

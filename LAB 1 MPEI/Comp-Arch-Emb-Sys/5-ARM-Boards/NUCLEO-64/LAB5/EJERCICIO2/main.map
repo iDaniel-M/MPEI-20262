@@ -654,12 +654,12 @@ LOAD linker stubs
  .debug_line    0x000003a0      0x574 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_udivmoddi4.o)
  .debug_line    0x00000914       0x4a /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_dvmd_tls.o)
 
-.debug_str      0x00000000     0x4608
- .debug_str     0x00000000     0x4608 main.o
-                               0x4102 (size before relaxing)
- .debug_str     0x00004608       0xa3 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_aeabi_uldivmod.o)
- .debug_str     0x00004608      0x685 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_udivmoddi4.o)
- .debug_str     0x00004608       0xc3 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_dvmd_tls.o)
+.debug_str      0x00000000     0x460b
+ .debug_str     0x00000000     0x460b main.o
+                               0x4105 (size before relaxing)
+ .debug_str     0x0000460b       0xa3 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_aeabi_uldivmod.o)
+ .debug_str     0x0000460b      0x685 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_udivmoddi4.o)
+ .debug_str     0x0000460b       0xc3 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m+fp/hard/libgcc.a(_dvmd_tls.o)
 
 .debug_frame    0x00000000      0x1c4
  .debug_frame   0x00000000      0x164 main.o

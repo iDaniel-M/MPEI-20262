@@ -4,7 +4,6 @@
 // ================================================================
 // DEFINICIONES FALTANTES EN LA CABECERA BARE-METAL
 // ================================================================
-
 #ifndef SYSCFG
 typedef struct {
     volatile uint32_t MEMRMP;
@@ -27,11 +26,6 @@ typedef struct {
 #define EXTI ((EXTI_TypeDef *) 0x40013C00)
 #endif
 
-#ifndef TIM1
-#define TIM1 ((TIM_TypeDef *) 0x40010000)
-#endif
-
-// Macros de bits faltantes
 #ifndef RCC_APB2ENR_SYSCFGEN
 #define RCC_APB2ENR_SYSCFGEN (1UL << 14)
 #endif
@@ -52,7 +46,7 @@ typedef struct {
 #define TIM_BDTR_MOE (1UL << 15)
 #endif
 
-// Definición completa de la estructura del Timer 1 (Avanzado) con BDTR incluido
+// Estructura completa del Timer 1 (Avanzado)
 typedef struct {
     volatile uint32_t CR1;
     volatile uint32_t CR2;
@@ -83,13 +77,9 @@ typedef struct {
 #define TIMER_CLOCK_HZ       16000000UL 
 #define DISPLAY_DIGITS       5U
 
-// Lógica de hardware
 #define SEGMENTS_ACTIVE_LOW  1 
 #define COMMONS_ACTIVE_LOW   0 
 
-// ================================================================
-// DICCIONARIO ALFANUMÉRICO (7 SEGMENTOS)
-// ================================================================
 #if SEGMENTS_ACTIVE_LOW
     #define SEG_OFF(pin) (1UL << (pin))
     #define SEG_ON(pin)  (1UL << ((pin) + 16))
@@ -106,7 +96,6 @@ typedef struct {
     #define COM_ON(pin)  (1UL << (pin))        
 #endif
 
-// Mapa hexadecimal para algunas letras y símbolos
 #define CHAR_P 0x73
 #define CHAR_L 0x38
 #define CHAR_A 0x77
@@ -127,29 +116,27 @@ typedef enum {
 } PlayerState;
 
 volatile PlayerState current_state = STATE_STOPPED;
-volatile uint8_t current_song = 0; // 0 = Melodía 1, 1 = Melodía 2
+volatile uint8_t current_song = 0; 
 
-// Variables para el scroll de texto
 volatile uint8_t display_buffer[5] = {CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
-const uint8_t text_play[] = {CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_P, CHAR_L, CHAR_A, CHAR_Y, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
-const uint8_t text_paus[] = {CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_P, CHAR_A, CHAR_U, CHAR_S, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
-const uint8_t text_stop[] = {CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_S, CHAR_T, CHAR_O, CHAR_P, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
+
+#define TEXT_LEN 9
+const uint8_t text_play[TEXT_LEN] = {CHAR_P, CHAR_L, CHAR_A, CHAR_Y, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
+const uint8_t text_paus[TEXT_LEN] = {CHAR_P, CHAR_A, CHAR_U, CHAR_S, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
+const uint8_t text_stop[TEXT_LEN] = {CHAR_S, CHAR_T, CHAR_O, CHAR_P, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK, CHAR_BLANK};
 
 volatile uint8_t scroll_index = 0;
 volatile uint16_t scroll_timer = 0;
 
-// Variables musicales
 typedef struct {
-    uint32_t frequency; // En Hz (0 = silencio)
-    uint32_t duration;  // En milisegundos
+    uint32_t frequency; 
+    uint32_t duration;  
 } Note;
 
-// Melodía 1 (Escala simple de prueba)
 const Note song_1[] = {
-    {261, 500}, {293, 500}, {329, 500}, {349, 500}, {392, 500}, {0, 0} // 0,0 indica fin de canción
+    {261, 500}, {293, 500}, {329, 500}, {349, 500}, {392, 500}, {0, 0} 
 };
 
-// Melodía 2 (Arpegio rápido)
 const Note song_2[] = {
     {440, 250}, {554, 250}, {659, 250}, {880, 500}, {0, 0}
 };
@@ -159,16 +146,10 @@ const Note* playlist[] = {song_1, song_2};
 volatile uint16_t note_index = 0;
 volatile uint16_t note_timer = 0;
 
-// *** FIX 3: debounce ***
-// Contador de milisegundos (incrementado en SysTick_Handler) y última
-// marca de tiempo en que cada botón fue realmente procesado. Sin esto,
-// el rebote mecánico de un solo "click" genera decenas de flancos en
-// pocos milisegundos, cada uno reentrando al ISR y saturando la CPU,
-// lo que deja el multiplexado de displays (TIM3) congelado en el
-// dígito que estaba activo en ese instante.
 #define DEBOUNCE_MS 200
 volatile uint32_t ms_ticks = 0;
-volatile uint32_t last_press_ms[4] = {0, 0, 0, 0}; // 0=PC10,1=PC11,2=PC12,3=PC13
+// Inicializamos con un valor negativo grande para permitir la primera pulsación inmediata sin bloqueos al arrancar
+volatile int32_t last_press_ms[4] = {-300, -300, -300, -300}; 
 
 // ================================================================
 // PROTOTIPOS
@@ -180,7 +161,6 @@ void TIM3_Multiplex_Init(void);
 void SysTick_Init(void);
 void Play_Tone(uint32_t freq);
 void Start_Playback(void);
-void Update_Scroll(void);
 int main(void);
 
 // ================================================================
@@ -195,18 +175,12 @@ void HardFault_Handler(void);
 void Reset_Handler(void) { main(); while (1); }
 void Default_Handler(void) { while (1); }
 
-// *** FIX 4: diagnóstico de HardFault ***
-// Si el sistema se "congela" de nuevo, esto lo distingue de otros
-// problemas: enciende el LED de usuario de la Nucleo-64 (LD2, PA5) y
-// se queda ahí fijo. Si al congelarse ves el LED encendido, confirmas
-// que es un HardFault real (acceso inválido a memoria/periférico) y
-// no solo el reproductor colgado esperando algo.
 void HardFault_Handler(void)
 {
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN;
     GPIOA->MODER &= ~(3UL << (5 * 2));
     GPIOA->MODER |=  (1UL << (5 * 2));
-    GPIOA->BSRR = (1UL << 5);
+    GPIOA->BSRR = (1UL << 5); 
     while (1);
 }
 
@@ -215,13 +189,13 @@ void (* const g_pfnVectors[])(void) =
 {
     (void (*)(void))(&_estack),
     Reset_Handler,
-    Default_Handler,     // NMI
-    HardFault_Handler,   // HardFault (FIX 4: antes era Default_Handler)
+    Default_Handler,     
+    HardFault_Handler,   
     Default_Handler, Default_Handler, 
     Default_Handler, Default_Handler, 0, 0, 0, 0,                       
     Default_Handler, Default_Handler, 0, SysTick_Handler, Default_Handler, 
     [16 + 29] = TIM3_IRQHandler,
-    [16 + 40] = EXTI15_10_IRQHandler // Vector de EXTI 10 a 15 (IRQ 40)
+    [16 + 40] = EXTI15_10_IRQHandler 
 };
 
 // ================================================================
@@ -229,89 +203,93 @@ void (* const g_pfnVectors[])(void) =
 // ================================================================
 void GPIO_Init(void)
 {
+    // Habilita reloj para puertos GPIO A, B y C
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN | RCC_AHB1ENR_GPIOBEN | RCC_AHB1ENR_GPIOCEN;
 
-    // PA8 como Función Alternativa (PWM TIM1_CH1 para el PN100)
+    // Configura PA8 como función alternativa PWM (TIM1_CH1)
     GPIOA->MODER &= ~(3UL << 16);
     GPIOA->MODER |= (2UL << 16);
     GPIOA->AFR[1] &= ~(0xFUL << 0);
-    GPIOA->AFR[1] |= (1UL << 0); // AF1 para TIM1
+    GPIOA->AFR[1] |= (1UL << 0); 
 
-    // PC10, PC11, PC12, PC13 como entradas con Pull-Up (Botones)
+    // Configura PC10, PC11, PC12, PC13 como entradas digitales con resistencia Pull-Up interna
     GPIOC->MODER &= ~((3UL << 20) | (3UL << 22) | (3UL << 24) | (3UL << 26));
     GPIOC->PUPDR &= ~((3UL << 20) | (3UL << 22) | (3UL << 24) | (3UL << 26));
     GPIOC->PUPDR |=  ((1UL << 20) | (1UL << 22) | (1UL << 24) | (1UL << 26));
 
-    // PC0, PC3, PC4, PC5, PC7, PC8 (Segmentos A-F)
+    // Configuración de pines de segmentos del display en Puerto C
     uint32_t mask_c = (3UL << 0) | (3UL << 6) | (3UL << 8) | (3UL << 10) | (3UL << 14) | (3UL << 16);
     GPIOC->MODER &= ~mask_c;
     GPIOC->MODER |= (1UL << 0) | (1UL << 6) | (1UL << 8) | (1UL << 10) | (1UL << 14) | (1UL << 16);
 
-    // PA9 (Segmento G)
+    // Configura PA9 como salida para el segmento G
     GPIOA->MODER &= ~(3UL << 18);
     GPIOA->MODER |= (1UL << 18);
 
-    // PB0-PB4 (Transistores de Multiplexado)
+    // Configura PB0-PB4 como salidas para el multiplexado de transistores
     GPIOB->MODER &= ~0x000003FF;
     GPIOB->MODER |= 0x00000155;
-
-    // Apagar todo por seguridad
     GPIOB->BSRR = COM_OFF(0) | COM_OFF(1) | COM_OFF(2) | COM_OFF(3) | COM_OFF(4);
 }
 
 void EXTI_Buttons_Init(void)
 {
-    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN; // Activa ruteo de EXTI
+    // Habilita el reloj del multiplexor de interrupciones externas (SYSCFG)
+    RCC->APB2ENR |= RCC_APB2ENR_SYSCFGEN; 
 
-    // *** FIX 1 ***
-    // Tras habilitar el reloj de SYSCFG hay que esperar a que se propague
-    // antes de escribir sus registros (ver guía, pregunta 5f). Sin esta
-    // lectura "dummy", SYSCFG->EXTICR puede quedar sin escribirse y
-    // EXTI10-13 se queda enrutado por defecto a GPIOA (no hay botón ahí),
-    // por lo que los botones en PC10-PC13 nunca generan la interrupción.
+    // Retardo de propagación para estabilizar el bus SYSCFG
     volatile uint32_t dummy;
     dummy = (RCC->APB2ENR);
     dummy = (RCC->APB2ENR);
     (void)dummy;
 
-    // Conectar PC10-PC13 a EXTI10-EXTI13
+    // Conecta las líneas EXTI 10 a 13 al Puerto C (valor 0x2)
     SYSCFG->EXTICR[2] &= ~(0xFF00); 
-    SYSCFG->EXTICR[2] |=  (0x2200); // PC10, PC11
+    SYSCFG->EXTICR[2] |=  (0x2200); 
     SYSCFG->EXTICR[3] &= ~(0x00FF); 
-    SYSCFG->EXTICR[3] |=  (0x0022); // PC12, PC13
+    SYSCFG->EXTICR[3] |=  (0x0022); 
 
-    // Interrupción por flanco de bajada (al presionar)
+    // Configura interrupción por flanco de bajada (al presionar el botón se conecta a tierra)
     EXTI->FTSR |= (1UL << 10) | (1UL << 11) | (1UL << 12) | (1UL << 13);
     EXTI->RTSR &= ~((1UL << 10) | (1UL << 11) | (1UL << 12) | (1UL << 13));
 
-    EXTI->IMR |= (1UL << 10) | (1UL << 11) | (1UL << 12) | (1UL << 13); // Desenmascarar
-    NVIC_EnableIRQ(40); // EXTI15_10_IRQn es la posición 40
+    // Desenmascara las interrupciones en el controlador EXTI
+    EXTI->IMR |= (1UL << 10) | (1UL << 11) | (1UL << 12) | (1UL << 13); 
+    NVIC_EnableIRQ(40); // Habilita la línea combinada EXTI15_10 en el NVIC
 }
 
 void TIM1_PWM_Init(void)
 {
-    RCC->APB2ENR |= RCC_APB2ENR_TIM1EN; // Timer 1 está en el bus APB2 (16MHz)
+    // Habilita reloj para el Timer Avanzado 1 en APB2
+    RCC->APB2ENR |= RCC_APB2ENR_TIM1EN; 
 
-    TIM1->PSC = 16 - 1; // Reloj del timer = 1 MHz
-    TIM1->ARR = 0;      // Frecuencia en 0 (Silencio por defecto)
+    // Prescaler para configurar resolución de 1 microsegundo por tick (16 MHz / 16)
+    TIM1->PSC = 16 - 1; 
     
-    // Configurar Modo PWM 1 en el Canal 1
-    TIM1->CCMR1 &= ~TIM_CCMR1_CC1S;   // Canal como salida
-    TIM1->CCMR1 |= (6UL << 4);        // OC1M = 110 (Modo PWM 1)
-    TIM1->CCMR1 |= TIM_CCMR1_OC1PE;   // Preload enable
+    // Auto-Reload inicial seguro para evitar bloqueo del timer
+    TIM1->ARR = 1000;      
     
-    TIM1->CCER |= TIM_CCER_CC1E;      // Habilitar salida en CH1
-    TIM1->BDTR |= TIM_BDTR_MOE;       // Main Output Enable (CRÍTICO EN TIM1)
+    // Configura modo PWM 1 en el canal 1 (PA8)
+    TIM1->CCMR1 &= ~TIM_CCMR1_CC1S;   
+    TIM1->CCMR1 |= (6UL << 4);        
+    TIM1->CCMR1 |= TIM_CCMR1_OC1PE;   
     
-    TIM1->CCR1 = 0; // Ciclo de trabajo al 0%
+    TIM1->CCER |= TIM_CCER_CC1E;      
+    TIM1->BDTR |= TIM_BDTR_MOE;       // Obligatorio en timers avanzados para habilitar salidas físicas
+    
+    // Ciclo de trabajo inicial al 0% (silencio)
+    TIM1->CCR1 = 0; 
+    
+    // Inicia el contador del timer
     TIM1->CR1 |= TIM_CR1_CEN;
 }
 
 void TIM3_Multiplex_Init(void)
 {
+    // Timer 3 para refrescar los displays de 7 segmentos cada 2 ms
     RCC->APB1ENR |= RCC_APB1ENR_TIM3EN;
-    TIM3->PSC = 16 - 1;      // 1us por tick
-    TIM3->ARR = 2000 - 1;    // 2ms
+    TIM3->PSC = 16 - 1;      
+    TIM3->ARR = 2000 - 1;    
     TIM3->DIER |= TIM_DIER_UIE;
     NVIC_EnableIRQ(29);
     TIM3->CR1 |= TIM_CR1_CEN;
@@ -319,10 +297,10 @@ void TIM3_Multiplex_Init(void)
 
 void SysTick_Init(void)
 {
-    // SysTick interrumpe cada 1ms para llevar el tiempo exacto de las notas
+    // SysTick configurado para interrumpir exactamente cada 1 milisegundo
     SysTick->LOAD = 16000 - 1; 
     SysTick->VAL = 0;
-    SysTick->CTRL = (1 << 2) | (1 << 1) | (1 << 0); // Reloj del procesador, interrupción habilitada, activar
+    SysTick->CTRL = (1 << 2) | (1 << 1) | (1 << 0); 
 }
 
 // ================================================================
@@ -331,21 +309,16 @@ void SysTick_Init(void)
 void Play_Tone(uint32_t freq)
 {
     if (freq == 0) {
-        TIM1->CCR1 = 0; // 0% duty cycle (silencio)
+        // Establece ciclo de trabajo en 0% para generar silencio
+        TIM1->CCR1 = 0; 
     } else {
-        // Cálculo matemático del PWM: ARR = (1,000,000 / freq) - 1
+        // Calcula matemáticamente el periodo del PWM para la frecuencia deseada
         uint32_t arr_val = (1000000UL / freq) - 1;
         TIM1->ARR = arr_val;
-        TIM1->CCR1 = arr_val / 2; // 50% de ciclo de trabajo
+        TIM1->CCR1 = arr_val / 2; // Ciclo de trabajo al 50% para máxima amplitud sonora
     }
 }
 
-// *** FIX 2 ***
-// Arranca la reproducción desde la primera nota de la canción actual.
-// Antes, al pasar a STATE_PLAYING no se llamaba Play_Tone ni se
-// inicializaba note_timer: como note_timer arrancaba en 0, el primer
-// tick de SysTick_Handler incrementaba note_index ANTES de sonar nada,
-// así que la primera nota de la canción siempre se saltaba.
 void Start_Playback(void)
 {
     note_index = 0;
@@ -358,46 +331,48 @@ void Start_Playback(void)
 // ================================================================
 void EXTI15_10_IRQHandler(void)
 {
-    if (EXTI->PR & (1UL << 10)) // PC10: Play / Pause
+    // Interrupción del pin PC10 (Botón Play / Pause)
+    if (EXTI->PR & (1UL << 10)) 
     {
-        if ((ms_ticks - last_press_ms[0]) >= DEBOUNCE_MS)
+        if (((int32_t)ms_ticks - last_press_ms[0]) >= DEBOUNCE_MS)
         {
             last_press_ms[0] = ms_ticks;
             if (current_state == STATE_PLAYING) {
                 current_state = STATE_PAUSED;
-                Play_Tone(0); // Silencia al pausar
+                Play_Tone(0); 
             } else if (current_state == STATE_STOPPED) {
-                // Empieza la canción desde el principio
                 Start_Playback();
                 current_state = STATE_PLAYING;
-            } else { // STATE_PAUSED -> reanuda la nota en la que iba
+            } else { 
                 Play_Tone(playlist[current_song][note_index].frequency);
                 current_state = STATE_PLAYING;
             }
-            scroll_index = 0; // Reinicia el scroll
+            scroll_index = 0; 
         }
-        EXTI->PR = (1UL << 10); // Limpiar SIEMPRE, sea rebote o no
+        EXTI->PR = (1UL << 10); // Limpia la bandera de interrupción escribiendo un 1
     }
     
-    if (EXTI->PR & (1UL << 11)) // PC11: Stop
+    // Interrupción del pin PC11 (Botón Stop)
+    if (EXTI->PR & (1UL << 11)) 
     {
-        if ((ms_ticks - last_press_ms[1]) >= DEBOUNCE_MS)
+        if (((int32_t)ms_ticks - last_press_ms[1]) >= DEBOUNCE_MS)
         {
             last_press_ms[1] = ms_ticks;
             current_state = STATE_STOPPED;
             Play_Tone(0);
-            note_index = 0; // Reinicia la canción
+            note_index = 0; 
             scroll_index = 0;
         }
         EXTI->PR = (1UL << 11); 
     }
     
-    if (EXTI->PR & (1UL << 12)) // PC12: Siguiente Canción
+    // Interrupción del pin PC12 (Botón Siguiente Canción)
+    if (EXTI->PR & (1UL << 12)) 
     {
-        if ((ms_ticks - last_press_ms[2]) >= DEBOUNCE_MS)
+        if (((int32_t)ms_ticks - last_press_ms[2]) >= DEBOUNCE_MS)
         {
             last_press_ms[2] = ms_ticks;
-            current_song = (current_song + 1) % 2; // Alterna entre 0 y 1
+            current_song = (current_song + 1) % 2; 
             note_index = 0;
             scroll_index = 0;
             if (current_state == STATE_PLAYING) {
@@ -408,12 +383,13 @@ void EXTI15_10_IRQHandler(void)
         EXTI->PR = (1UL << 12); 
     }
 
-    if (EXTI->PR & (1UL << 13)) // PC13: Anterior
+    // Interrupción del pin PC13 (Botón Anterior Canción / Botón Azul de la Placa)
+    if (EXTI->PR & (1UL << 13)) 
     {
-        if ((ms_ticks - last_press_ms[3]) >= DEBOUNCE_MS)
+        if (((int32_t)ms_ticks - last_press_ms[3]) >= DEBOUNCE_MS)
         {
             last_press_ms[3] = ms_ticks;
-            current_song = (current_song == 0) ? 1 : 0;
+            current_song = (current_song == 0) ? 1 : 0; 
             note_index = 0;
             scroll_index = 0;
             if (current_state == STATE_PLAYING) {
@@ -425,23 +401,21 @@ void EXTI15_10_IRQHandler(void)
     }
 }
 
-// Interrupción de tiempo (1 milisegundo exacto)
 void SysTick_Handler(void)
 {
-    ms_ticks++; // Base de tiempo para el debounce de los botones
+    ms_ticks++; // Incrementa el contador de milisegundos global para el antirrebote
 
-    // 1. Manejo del reproductor musical
+    // Lógica del reproductor musical nota por nota
     if (current_state == STATE_PLAYING) 
     {
         if (note_timer > 0) {
-            note_timer--; // Descuenta 1ms de la duración de la nota actual
+            note_timer--; 
         } else {
-            // Se acabó el tiempo de la nota actual, pasamos a la siguiente
             note_index++;
             uint32_t next_freq = playlist[current_song][note_index].frequency;
             uint32_t next_duration = playlist[current_song][note_index].duration;
 
-            if (next_duration == 0) { // Encontramos el final (0,0)
+            if (next_duration == 0) { // Fin de la canción actual
                 current_state = STATE_STOPPED;
                 note_index = 0;
                 Play_Tone(0);
@@ -452,53 +426,52 @@ void SysTick_Handler(void)
         }
     }
 
-    // 2. Manejo del texto deslizante (Scroll de 500ms)
+    // Lógica de desplazamiento del texto en los displays (cada 500 ms)
     scroll_timer++;
     if (scroll_timer >= 500) 
     {
         scroll_timer = 0;
         const uint8_t* active_text;
-        uint8_t text_length = 14; 
 
         if (current_state == STATE_PLAYING) active_text = text_play;
         else if (current_state == STATE_PAUSED) active_text = text_paus;
         else active_text = text_stop;
 
-        // Carga 5 letras consecutivas en los 5 displays
         for (int i = 0; i < 5; i++) {
-            display_buffer[i] = active_text[(scroll_index + i) % text_length];
+            display_buffer[i] = active_text[(scroll_index + i) % TEXT_LEN];
         }
 
         scroll_index++;
-        if (scroll_index >= text_length) scroll_index = 0;
+        if (scroll_index >= TEXT_LEN) scroll_index = 0;
     }
 }
 
 void TIM3_IRQHandler(void)
 {
-    if (TIM3->SR & TIM_SR_UIF)
+    // Interrupción de multiplexado de 7 segmentos (cada 2 ms)
+    if (TIM3->SR & TIM_SR_UIF) 
     {
-        static uint8_t current_digit = 0;
+        static uint8_t current_digit = 0; 
 
-        // Apagar todos los displays (Ghosting)
+        // Apaga todos los transistores para evitar efecto fantasma
         GPIOB->BSRR = COM_OFF(0) | COM_OFF(1) | COM_OFF(2) | COM_OFF(3) | COM_OFF(4);
 
         uint8_t pattern = display_buffer[current_digit];
 
-        // Apagar segmentos por defecto
+        // Apaga los segmentos del display actual
         GPIOC->BSRR = SEG_OFF(0) | SEG_OFF(3) | SEG_OFF(4) | SEG_OFF(5) | SEG_OFF(7) | SEG_OFF(8);
         GPIOA->BSRR = SEG_OFF(9);
 
-        // Encender dinámicamente los segmentos que dicte la letra
-        if (pattern & 0x01) GPIOC->BSRR = SEG_ON(0); // A
-        if (pattern & 0x02) GPIOC->BSRR = SEG_ON(7); // B
-        if (pattern & 0x04) GPIOC->BSRR = SEG_ON(8); // C
-        if (pattern & 0x08) GPIOC->BSRR = SEG_ON(3); // D
-        if (pattern & 0x10) GPIOC->BSRR = SEG_ON(4); // E
-        if (pattern & 0x20) GPIOC->BSRR = SEG_ON(5); // F
-        if (pattern & 0x40) GPIOA->BSRR = SEG_ON(9); // G
+        // Enciende los segmentos según el patrón de la letra
+        if (pattern & 0x01) GPIOC->BSRR = SEG_ON(0); 
+        if (pattern & 0x02) GPIOC->BSRR = SEG_ON(7); 
+        if (pattern & 0x04) GPIOC->BSRR = SEG_ON(8); 
+        if (pattern & 0x08) GPIOC->BSRR = SEG_ON(3); 
+        if (pattern & 0x10) GPIOC->BSRR = SEG_ON(4); 
+        if (pattern & 0x20) GPIOC->BSRR = SEG_ON(5); 
+        if (pattern & 0x40) GPIOA->BSRR = SEG_ON(9); 
 
-        // Encender dígito
+        // Enciende el dígito correspondiente
         GPIOB->BSRR = COM_ON(current_digit);
 
         current_digit++;
@@ -510,18 +483,17 @@ void TIM3_IRQHandler(void)
 
 int main(void)
 {
+    // Inicialización de periféricos
     GPIO_Init();
     TIM1_PWM_Init();
     TIM3_Multiplex_Init();
     EXTI_Buttons_Init();
     SysTick_Init();
 
-    // Inicia el sistema
     current_state = STATE_STOPPED;
     Play_Tone(0);
 
     while (1) {
-        // En un sistema por interrupciones, el main no hace nada. 
-        // Se queda durmiendo ahorrando energía.
+        // Bucle vacío. Las interrupciones gestionan toda la lógica en segundo plano.
     }
 }

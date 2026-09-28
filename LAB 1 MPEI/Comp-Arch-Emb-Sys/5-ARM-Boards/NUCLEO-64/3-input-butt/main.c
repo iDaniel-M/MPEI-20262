@@ -29,27 +29,27 @@
 int main()
 {
 
-  *RCC_AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN);
-  *RCC_AHB1ENR |= (1 << RCC_AHB1ENR_GPIOCEN);
+  *RCC_AHB1ENR |= (1 << RCC_AHB1ENR_GPIOAEN); // Enable the clock on the GPIOA
+  *RCC_AHB1ENR |= (1 << RCC_AHB1ENR_GPIOCEN); // Enable the clock on the GPIOC
 
   // do two dummy reads after enabling the peripheral clock, as per the errata
   volatile uint32_t dummy;
   dummy = *(RCC_AHB1ENR);
   dummy = *(RCC_AHB1ENR);
 
-  *GPIOA_MODER |= (1 << GPIO_MODER_MODER5);
-  *GPIOC_MODER &= ~(3 << GPIO_MODER_MODER13);
+  *GPIOA_MODER |= (1 << GPIO_MODER_MODER5); // Configure PA5 as output
+  *GPIOC_MODER &= ~(3 << GPIO_MODER_MODER13); // Configure PC13 as input
   
   while(1)
   {
 
-    if((*GPIOC_IDR & (1 << 13)) != 0)
+    if((*GPIOC_IDR & (1 << 13)) != 0) //Read the status of the Pushbutton
     {
-      *GPIOA_ODR |= (1 << LED_PIN);
+      *GPIOA_ODR |= (1 << LED_PIN); // Turn on the LED
     }
     else
     {
-      *GPIOA_ODR &= ~(1 << LED_PIN);
+      *GPIOA_ODR &= ~(1 << LED_PIN); // Turn off the LED
     }
     
   }

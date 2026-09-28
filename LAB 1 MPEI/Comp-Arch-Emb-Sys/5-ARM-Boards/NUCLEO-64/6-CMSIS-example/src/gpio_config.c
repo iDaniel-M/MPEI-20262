@@ -5,21 +5,17 @@
 
 void GPIO_Config(void)
 {
-  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Enable GPIOA clock in RCC_AHB1ENR register (bit 0)
-  RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN; // Enable GPIOC clock in RCC_AHB1ENR register (bit 2)
+  WRITE_REG_FIELD(RCC->AHB1ENR, RCC_AHB1ENR_GPIOAEN_Msk, 1); // Enable GPIOA clock in RCC_AHB1ENR register (bit 0)
+  WRITE_REG_FIELD(RCC->AHB1ENR, RCC_AHB1ENR_GPIOCEN_Msk, 1); // Enable GPIOC clock in RCC_AHB1ENR register (bit 2)
 
   // do two dummy reads after enabling the peripheral clock, as per the errata
   volatile unsigned int dummy;
   dummy = (RCC->AHB1ENR);
   dummy = (RCC->AHB1ENR);
 
-    
-  //GPIOA->MODER |= (1 << LED_PIN*2); // Set GPIOA pin 5 as output (bits 10-11 = 01)
-  //GPIOC->MODER &= ~(3 << 13*2); // Set GPIOC pin 13 as input (bits 26-27 = 00)
-  //GPIOA->MODER_Bits.MODER5 = 1; // Set GPIOA pin 5 as output (bits 10-11 = 01)
-  //GPIOC->MODER_Bits.MODER13 = 0; // Set GPIOC pin 13 as input (bits 26-27 = 00)
-  GPIOA->MODER |= (1 << GPIO_MODER_MODER5_Pos);
-  GPIOC->MODER &= ~(3 << GPIO_MODER_MODER13_Pos);
+
+  WRITE_REG_FIELD(GPIOA->MODER, GPIO_MODER_MODER5_Msk, 1); // Set PA5 as output
+  WRITE_REG_FIELD(GPIOC->MODER, GPIO_MODER_MODER13_Msk, 0); // Set PC13 as input
 
 }
 

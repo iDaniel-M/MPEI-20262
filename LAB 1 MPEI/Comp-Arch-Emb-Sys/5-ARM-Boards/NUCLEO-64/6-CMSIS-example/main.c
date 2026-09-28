@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include "stm32f401xe.h"
-#include "gpio_config.h"
-#include "SysTick.h"
+#include "inc/gpio_config.h"
+#include "inc/SysTick.h"
 
 
 #define LED_PIN 5 // Pin 5 corresponds to the on-board LED on the NUCLEO-64 board
@@ -13,7 +13,7 @@ int main()
 {
 
   GPIO_Config();
-  SysTick_Init();
+  SysTick_Init(1);
 
   while(1)
   {
