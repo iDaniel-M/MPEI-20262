@@ -1,4 +1,3 @@
-
 #include "inc/usart.h"
 
 void UART_GPIO_Config(USART_TypeDef* USART){
