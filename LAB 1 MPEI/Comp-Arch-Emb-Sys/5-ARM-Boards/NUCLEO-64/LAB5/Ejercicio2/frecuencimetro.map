@@ -1,0 +1,183 @@
+Archive member included to satisfy reference by file (symbol)
+
+/usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+                              /tmp/cctDy0Gw.o (__aeabi_uldivmod)
+/usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+                              /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o) (__udivmoddi4)
+/usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+                              /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o) (__aeabi_ldiv0)
+
+There are no discarded input sections
+
+Memory Configuration
+
+Name             Origin             Length             Attributes
+FLASH            0x08000000         0x00080000         xr
+RAM              0x20000000         0x00020000         xrw
+*default*        0x00000000         0xffffffff
+
+Linker script and memory map
+
+LOAD /tmp/cctDy0Gw.o
+LOAD /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a
+                0x20020000                        _estack = (ORIGIN (RAM) + LENGTH (RAM))
+
+.isr_vector     0x08000000       0xb8
+                0x08000000                        . = ALIGN (0x4)
+ *(.isr_vector)
+ .isr_vector    0x08000000       0xb8 /tmp/cctDy0Gw.o
+                0x08000000                g_pfnVectors
+                0x080000b8                        . = ALIGN (0x4)
+
+.ARM.extab      0x080000b8        0x0
+ .ARM.extab     0x080000b8        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+
+.ARM.exidx      0x080000b8        0x8
+ .ARM.exidx     0x080000b8        0x8 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+
+.text           0x080000c0      0x720
+                0x080000c0                        . = ALIGN (0x4)
+ *(.text)
+ .text          0x080000c0      0x340 /tmp/cctDy0Gw.o
+                0x080000c0                Default_Handler
+                0x080000c4                TIM2_IRQHandler
+                0x0800012c                TIM3_IRQHandler
+                0x0800020c                GPIO_Init
+                0x080002b0                TIM2_IC_Init
+                0x08000324                TIM3_Multiplex_Init
+                0x08000368                Update_Display_Digits
+                0x080003f8                Reset_Handler
+ .text          0x08000400       0x30 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+                0x08000400                __aeabi_uldivmod
+ .text          0x08000430      0x2bc /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+                0x08000430                __udivmoddi4
+ .text          0x080006ec        0x4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+                0x080006ec                __aeabi_ldiv0
+                0x080006ec                __aeabi_idiv0
+ *(.text*)
+ .text.startup  0x080006f0       0xbc /tmp/cctDy0Gw.o
+                0x080006f0                main
+ *(.rodata)
+ .rodata        0x080007ac       0x32 /tmp/cctDy0Gw.o
+                0x080007ac                segment_mask_complete
+                0x080007d4                segment_map
+ *(.rodata*)
+                0x080007e0                        . = ALIGN (0x4)
+ *fill*         0x080007de        0x2 
+
+.data           0x080007e0        0x0
+ .data          0x080007e0        0x0 /tmp/cctDy0Gw.o
+ .data          0x080007e0        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .data          0x080007e0        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .data          0x080007e0        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.igot.plt       0x080007e0        0x0
+ .igot.plt      0x080007e0        0x0 /tmp/cctDy0Gw.o
+
+.glue_7         0x080007e0        0x0
+ .glue_7        0x080007e0        0x0 linker stubs
+
+.glue_7t        0x080007e0        0x0
+ .glue_7t       0x080007e0        0x0 linker stubs
+
+.vfp11_veneer   0x080007e0        0x0
+ .vfp11_veneer  0x080007e0        0x0 linker stubs
+
+.v4_bx          0x080007e0        0x0
+ .v4_bx         0x080007e0        0x0 linker stubs
+
+.iplt           0x080007e0        0x0
+ .iplt          0x080007e0        0x0 /tmp/cctDy0Gw.o
+
+.rel.dyn        0x080007e0        0x0
+ .rel.iplt      0x080007e0        0x0 /tmp/cctDy0Gw.o
+
+.bss            0x20000000       0x28
+                0x20000000                        . = ALIGN (0x4)
+                0x20000000                        _sbss = .
+ *(.bss)
+ .bss           0x20000000       0x25 /tmp/cctDy0Gw.o
+                0x20000000                last_capture_tick
+                0x20000008                freq_sum
+                0x20000010                freq_count
+                0x20000014                current_digit
+                0x20000018                digits_to_display
+                0x20000020                display_freq
+                0x20000024                one_second_flag
+ .bss           0x20000025        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .bss           0x20000025        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .bss           0x20000025        0x0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+ *(.bss*)
+ *(COMMON)
+                0x20000028                        . = ALIGN (0x4)
+ *fill*         0x20000025        0x3 
+                0x20000028                        _ebss = .
+OUTPUT(frecuencimetro.elf elf32-littlearm)
+LOAD linker stubs
+
+.comment        0x00000000       0x26
+ .comment       0x00000000       0x26 /tmp/cctDy0Gw.o
+                                 0x27 (size before relaxing)
+ .comment       0x00000026       0x27 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+
+.ARM.attributes
+                0x00000000       0x2e
+ .ARM.attributes
+                0x00000000       0x2e /tmp/cctDy0Gw.o
+ .ARM.attributes
+                0x0000002e       0x1e /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .ARM.attributes
+                0x0000004c       0x2e /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .ARM.attributes
+                0x0000007a       0x1e /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_line     0x00000000      0x60c
+ .debug_line    0x00000000       0x4e /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .debug_line    0x0000004e      0x574 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_line    0x000005c2       0x4a /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_line_str
+                0x00000000       0xa0
+ .debug_line_str
+                0x00000000       0xa0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+                                 0x94 (size before relaxing)
+ .debug_line_str
+                0x000000a0       0x98 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_info     0x00000000      0x755
+ .debug_info    0x00000000       0x24 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .debug_info    0x00000024      0x6f5 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_info    0x00000719       0x3c /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_abbrev   0x00000000      0x1a4
+ .debug_abbrev  0x00000000       0x14 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .debug_abbrev  0x00000014      0x16a /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_abbrev  0x0000017e       0x26 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_aranges  0x00000000       0x60
+ .debug_aranges
+                0x00000000       0x20 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .debug_aranges
+                0x00000020       0x20 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_aranges
+                0x00000040       0x20 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_str      0x00000000      0x6ca
+ .debug_str     0x00000000      0x6ca /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+                                 0xa0 (size before relaxing)
+ .debug_str     0x000006ca      0x67f /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+ .debug_str     0x000006ca       0xc0 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_dvmd_tls.o)
+
+.debug_frame    0x00000000       0x60
+ .debug_frame   0x00000000       0x2c /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x0000002c       0x34 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+
+.debug_loclists
+                0x00000000      0x9e4
+ .debug_loclists
+                0x00000000      0x9e4 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)
+
+.debug_rnglists
+                0x00000000       0x84
+ .debug_rnglists
+                0x00000000       0x84 /usr/lib/gcc/arm-none-eabi/13.2.1/thumb/v7e-m/nofp/libgcc.a(_udivmoddi4.o)

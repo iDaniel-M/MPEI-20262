@@ -15,7 +15,7 @@
 // ConfiguraciOn de la lOgica de hardware para los componentes externos
 #define SEGMENTS_ACTIVE_LOW  1 // Indica que los segmentos (LEDs) se encienden con un 0 lOgico (GND)
 #define COMMONS_ACTIVE_LOW   0 // Indica que los dIgitos (transistores NPN) se activan con un 1 lOgico (3.3V) en la base
-
+#define Systick    
  
 // PROTOTIPOS DE FUNCIONES
  
@@ -37,9 +37,9 @@ void Default_Handler(void) { while (1); }       // Trampa de seguridad si ocurre
 
 __attribute__((section(".isr_vector"))) // Coloca este arreglo exactamente al inicio de la memoria Flash (0x08000000)
 void (* const g_pfnVectors[])(void) =
-{
-    (void (*)(void))(&_estack), // PosiciOn 0: DirecciOn de inicio de la pila (Stack Pointer)
-    Reset_Handler,              // PosiciOn 1: Vector de Reset
+{+
+    (void (*)(void))(&_estack), // Posicion 0: DirecciOn de inicio de la pila (Stack Pointer)
+    Reset_Handler,              // Posicion 1: Vector de Reset
     Default_Handler, Default_Handler, Default_Handler, Default_Handler, // Vectores de excepciones del sistema ARM Cortex-M4
     Default_Handler, Default_Handler, 0, 0, 0, 0,                       // Espacios reservados por la arquitectura
     Default_Handler, Default_Handler, 0, Default_Handler, Default_Handler, // Systick, PendSV, etc. (No usados, apuntan a Default)
@@ -300,7 +300,6 @@ void TIM3_IRQHandler(void)
     }
 }
 
- 
 // EXTRACCION Y ORDENAMIENTO DE DIGITOS
  
 void Update_Display_Digits(uint32_t freq)

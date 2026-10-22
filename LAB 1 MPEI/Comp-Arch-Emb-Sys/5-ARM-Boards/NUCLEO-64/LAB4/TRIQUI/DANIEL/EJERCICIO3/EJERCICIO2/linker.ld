@@ -8,12 +8,12 @@ MEMORY
   FLASH  (rx)     : ORIGIN = 0x08000000, LENGTH = 512K
 }
 
-/* Ubicación inicial del Stack Pointer al final de la RAM */
+/* Ubicacion inicial del Stack Pointer al final de la RAM */
 _estack = ORIGIN(RAM) + LENGTH(RAM);
 
 SECTIONS
 {
-  /* Tabla de vectores de interrupción en el inicio de la Flash */
+  /* Tabla de vectores de interrupcion en el inicio de la Flash */
   .isr_vector :
   {
     . = ALIGN(4);
@@ -21,7 +21,7 @@ SECTIONS
     . = ALIGN(4);
   } >FLASH
 
-  /* Código fuente y constantes de solo lectura */
+  /* Codigo fuente y constantes de solo lectura */
   .text :
   {
     . = ALIGN(4);
