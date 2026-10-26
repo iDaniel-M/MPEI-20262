@@ -12,7 +12,7 @@
    B2 azul), pero se queda 4 s en cada (fase, bit) elegido e imprime `PASO fase= bit=` por UART.
    WALK normal avanza 3 pasos/s y una foto de la webcam tarda ~1.5 s, así que no se podía saber
    con certeza a qué paso correspondía cada foto.
-2. Cada foto se asoció a su paso con la hora de la UART (`fotos/mapa/Fx_By.jpg`).
+2. Cada foto se asoció a su paso con la hora de la UART (`pruebas_y_diagnostico/fotos/mapa/Fx_By.jpg`).
 3. Posición del LED encendido: se calibró la cuadrícula de 32×16 con los LEDs apagados
    (homografía con OpenCV, 511/512 celdas detectadas, error medio 0.11 celdas) y se convirtió el
    centro del punto azul a (x, y). Se comprobó con dos calibraciones distintas (diferencia < 0.1 celda).
@@ -81,7 +81,7 @@ raw[fase][bit] |= color << (3 * half);   /* color: bit0=R bit1=G bit2=B */
 
 ## Validación
 `pruebas.c` VAR 19 dibuja con esta fórmula inversa un marco verde en todo el borde, una diagonal roja
-de (0,0) a (15,15) y una azul de (16,0) a (31,15). Foto: `fotos/V19_validacion_2.jpg`.
+de (0,0) a (15,15) y una azul de (16,0) a (31,15). Foto: `pruebas_y_diagnostico/fotos/V19_validacion_2.jpg`.
 Las tres figuras salen completas y sin cortes, así que la regla vale para los 4 bloques, las
 4 fases y las dos mitades.
 

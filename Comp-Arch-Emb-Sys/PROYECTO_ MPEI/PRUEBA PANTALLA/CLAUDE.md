@@ -49,3 +49,9 @@ Extras: LD2=PA5, botón azul=PC13, USART2 TX=PA2 (VCP ST-LINK, 115200).
 - Mapeo medido y validado (VAR 19): bloque=bit/16, j=bit%16; j<8: x=8*bloque+7-j, y=fase;
   j>=8: x=8*bloque+j-8, y=fase+4; R2/G2/B2 -> y+8. Siguiente: driver de framebuffer (x,y) para el Snake.
 - `serpiente.c`: demo grabada en la placa (serpiente de 24 LEDs R,G,B en zig-zag, TIM3 + doble buffer + set_pixel con el mapeo).
+
+## Reorganización 26-oct-2026
+- Raíz = serpiente simple estilo curso: `crt0.S`, `linker_script.ld`, `inc/`, `src/`, `main.c`, `Makefile` (`make && make flash`).
+  Refresco por polling (sin IRQ), OE por GPIO, brillo = `TIEMPO_ENCENDIDO_US` en `src/panel_hub75.c`.
+- Todo lo de pruebas (main.c viejo, scan.c, pruebas.c, serpiente.c vieja, regs.h, startup.c, PRUEBAS.md, fotos) en `pruebas_y_diagnostico/` con su Makefile.
+- 26-oct: falla de jumpers (pines en GND) resuelta; ver PRUEBAS.md §11.

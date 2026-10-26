@@ -151,3 +151,16 @@ derecha; R2/G2/B2 = misma posición + 8 filas.
 ## 10. Demo serpiente RGB
 `serpiente.c` (`make serpiente && make flash-serpiente`): 24 LEDs con colores R, G, B alternados recorren
 el panel en zig-zag a 25 pasos/s, brillo 36 % (se bajó desde 60 % porque deslumbraba). Funciona (`fotos/SERPIENTE_mosaico.jpg`). **Es lo que quedó grabado en la placa.**
+
+## 11. Falla 26-oct-2026: panel congelado
+- Síntoma: imagen fija (cian/rojo/blanco en las 8 columnas de la izquierda, `fotos/V26_congelado.jpg`);
+  no cambia ni con reset, aunque la UART muestra WALK avanzando -> el panel no recibe CLK/LAT.
+- Autodiagnóstico (`make pruebas VAR=0`): **R1 PC0, R2 PC3, CLK PC8 y A PC10 en corto a GND**
+  (PD=0 PU=0 OUT1=0); el resto bien.
+- Son los pines HUB75 1, 5, 9 y 13. Con el conector girado 180° (pin n -> 17-n) caen en
+  16 (GND), 12 (D, a GND en 1/4 scan), 8 (GND) y 4 (GND): coincide exacto.
+  -> **El conector IDC del cable quedó enchufado al revés (girado 180°).**
+- Se borró la flash para no forzar en alto pines en corto. Tras corregir: `make && make flash`.
+- 1.er arreglo: CLK ya llegaba, pero quedaron en corto R1 PC0, G2 PC4, LAT PC7 y B PC11 (jumpers en pines GND/D).
+- 2.º arreglo: Daniel recableó con la tabla de pines -> autodiagnóstico sin cortos, VAR 0 pinta todo
+  rojo (`fotos/V26_reparado_rojo.jpg`). Se regrabó `serpiente.c` y funciona. **RESUELTO.**

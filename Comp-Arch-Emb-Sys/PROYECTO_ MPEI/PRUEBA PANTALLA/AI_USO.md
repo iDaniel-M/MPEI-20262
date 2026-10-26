@@ -43,3 +43,18 @@
 - `serpiente.c` y sus objetivos `serpiente` / `flash-serpiente` del `Makefile` los generó la IA a pedido
   de Daniel: refresco por TIM3 copiado de `main.c`, `set_pixel()` con la fórmula de MAPEO.md, doble
   buffer con barrera de compilador, y recorrido en zig-zag. Probado en el panel (fotos/SERPIENTE_*.jpg).
+
+## Diagnóstico panel congelado (26-oct-2026, Claude Code)
+- La IA tomó fotos con la webcam (ffmpeg), leyó la UART, grabó `pruebas.c` VAR 0 (sin cambios) y
+  dedujo de los 4 pines en corto que el conector HUB75 estaba girado 180° (PRUEBAS.md §11).
+  No se modificó código.
+
+## Serpiente simplificada estilo curso (26-oct-2026, Claude Code)
+- A pedido de Daniel, la IA reescribió la serpiente siguiendo la estructura de los ejemplos del
+  curso (repo divadnauj-GB/Comp-Arch-Emb-Sys, `5-ARM-Boards/NUCLEO-64/4-custom-hal` y `5-systick-delay`):
+  `crt0.S` (arranque en ensamblador, basado en el del curso), `linker_script.ld`, `inc/stm32f446.h`,
+  `src/gpio_config.c`, `src/SysTick.c`, `src/panel_hub75.c`, `main.c` y `Makefile`.
+- Cambios de diseño para que sea fácil de explicar: sin interrupciones ni timers PWM (refresco por
+  polling en el lazo principal), imagen `pantalla[fila][columna]` con un color por píxel, nombres
+  completos y máscaras con nombre.
+- Los archivos de pruebas se movieron, sin cambios, a `pruebas_y_diagnostico/`.
