@@ -13,8 +13,8 @@
 .global g_pfnVectors
 .global Reset_Handler
 
-/* stack_top lo define linker_script.ld: es el final de la RAM (la pila crece hacia abajo) */
-.equ RAM_STACK_TOP, stack_top
+/* _estack lo define linker_script.ld: es el final de la SRAM (la pila crece hacia abajo) */
+.equ RAM_STACK_TOP, _estack
 
 /* ===================== Tabla de vectores =====================
  * Solo se usan las excepciones del núcleo: este programa NO usa interrupciones
