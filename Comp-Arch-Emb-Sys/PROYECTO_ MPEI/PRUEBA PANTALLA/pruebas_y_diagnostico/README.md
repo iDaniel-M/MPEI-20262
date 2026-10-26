@@ -11,7 +11,7 @@ y descubrir su mapeo interno antes de escribir el driver definitivo del Snake.
 | `stm32f446.ld` | Linker script: FLASH 512 KB @0x08000000, RAM 128 KB @0x20000000 |
 | `main.c` | Refresco HUB75 por interrupción de TIM3 + modos de prueba |
 | `Makefile` | Compilación con `arm-none-eabi-gcc`, grabación con `st-flash` u OpenOCD |
-| `AI_USO.md` | Declaración del uso de IA (requisito 10) |
+| `../AI_USO.md` | Declaración del uso de IA (requisito 10) |
 | `pruebas.c` | Banco de pruebas del protocolo (variantes con `make pruebas VAR=n`), autodiagnóstico de pines |
 | `PRUEBAS.md` | Registro de pruebas del 22-oct y conclusiones |
 | `MAPEO.md` | Mapeo medido (fase, bit) → (x, y) del panel y fórmula inversa |

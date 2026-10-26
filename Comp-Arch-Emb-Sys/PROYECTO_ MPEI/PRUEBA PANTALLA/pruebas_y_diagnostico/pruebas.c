@@ -374,7 +374,7 @@ static uint32_t read_with_pull(uint32_t p, uint32_t pull)   /* pull: 1=up 2=down
 
 static void pin_diag(void)
 {
-    /* Nombres según el cableado PREVISTO (CLAUDE.md), sin importar la variante */
+    /* Nombres según el cableado PREVISTO (README.md), sin importar la variante */
     static const uint8_t pins[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 10, 11};
     static const char *const nm[] = {"R1", "G1", "B1", "R2", "G2", "B2", "OE", "LAT", "CLK", "A", "B"};
     uart_puts("Diag pines (pull-down -> lee / pull-up -> lee):\r\n");
