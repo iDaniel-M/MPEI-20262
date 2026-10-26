@@ -15,7 +15,10 @@
 
 #define NUMERO_FASES      4    // escaneo 1/4
 #define PULSOS_POR_FASE   64   // datos que se envían en cada fase
-#define TIEMPO_ENCENDIDO_US 150 // tiempo que se encienden los LEDs en cada fase (brillo)
+/* Brillo: 40 % del original (antes 150 us encendido). Encendido + apagado = 150 us,
+   así cada fase dura lo mismo y la velocidad de la serpiente no cambia. */
+#define TIEMPO_ENCENDIDO_US 60  // tiempo que se encienden los LEDs en cada fase (brillo)
+#define TIEMPO_APAGADO_US   90  // tiempo extra con los LEDs apagados
 
 /* La imagen: un color por píxel. pantalla[fila][columna] */
 static uint8_t pantalla[PANEL_ALTO][PANEL_ANCHO];
@@ -86,5 +89,6 @@ void Panel_Refrescar(void)
         write_pin_state(GPIOC, PIN_OE, 0);     // 5) encender los LEDs un rato
         SysTick_Delay_us(TIEMPO_ENCENDIDO_US);
         write_pin_state(GPIOC, PIN_OE, 1);     // 6) apagar antes de la siguiente fase
+        SysTick_Delay_us(TIEMPO_APAGADO_US);   // 7) esperar apagado (baja el brillo)
     }
 }
